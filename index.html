@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeeFunded — Trade Your Strategy. Get Funded.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      fontFamily:{sans:['Inter','sans-serif'], display:['Space Grotesk','sans-serif']},
+      colors:{
+        zee:{bg:'#04061a', card:'#0e1130', card2:'#13163d', purple:'#6d28ff', violet:'#8b5cf6', pink:'#b245ff'}
+      }
+    }
+  }
+}
+</script>
+<style>
+html{scroll-behavior:smooth}
+body{background:#04061a;color:#fff;overflow-x:hidden}
+.glow-line{height:1px;background:linear-gradient(90deg,transparent, #7c3aed 50%, transparent);box-shadow:0 0 20px #7c3aed,0 0 40px #7c3aed}
+.beam{position:absolute;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.9),rgba(168,85,247,0.6),transparent);height:1px;filter:blur(0.5px)}
+.beam-thick{position:absolute;background:linear-gradient(90deg,rgba(91,33,255,0.0),rgba(91,33,255,0.9),rgba(168,85,247,0.7),transparent);height:48px;transform:skewY(-32deg);opacity:0.9}
+.card-glow{position:relative}
+.card-glow::before{content:"";position:absolute;inset:-1px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.02));z-index:-1}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#2a2d5a;border-radius:999px}
+::-webkit-scrollbar-track{background:#06081f}
+</style>
+</head>
+<body class="font-sans antialiased">
+<!-- NAV -->
+<nav id="navbar" class="fixed top-0 w-full z-50 bg-[#04061a]/70 backdrop-blur-xl border-b border-white/[0.06] transition-all">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6 h-[68px] flex items-center justify-between gap-6">
+    <a href="#home" class="flex items-center gap-3 shrink-0">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6d28ff] to-[#b245ff] flex items-center justify-center relative overflow-hidden shadow-[0_0_20px_rgba(109,40,255,0.5)]">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+          <defs><linearGradient id="g1" x1="0" y1="32" x2="32" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#3b82ff"/><stop offset="0.5" stop-color="#6d28ff"/><stop offset="1" stop-color="#ff2cdf"/></linearGradient></defs>
+          <path d="M5 9 H29 L12.5 23 H24.5 L17 30.5 L12 24.5 L22.5 12 H5 V9Z" fill="white"/>
+          <path d="M20.5 15.5 H33.5 L30 20.5 H23.5 V24 H29.5 L26.5 29 H19.5 V15.5Z" fill="white" opacity="0.95"/>
+          <path d="M10.5 32.5 L27.5 11.5 L29.5 15.2 L36.5 5.5 L25.5 2.5 L29.2 6.8 L8.5 28.5 L11.5 29.5 Z" fill="url(#g1)"/>
+        </svg>
+      </div>
+      <span class="font-display font-bold text-[22px] tracking-tight">ZeeFunded</span>
+    </a>
+    <div class="hidden lg:flex items-center gap-7 text-[13.5px] font-medium text-white/70">
+      <a href="#home" class="nav-link text-white">Home</a>
+      <a href="#accounts" class="nav-link hover:text-white transition">Accounts</a>
+      <a href="#how-it-works" class="nav-link hover:text-white transition">How It Works</a>
+      <a href="#trading-rules" class="nav-link hover:text-white transition">Trading Rules</a>
+      <a href="#faq" class="nav-link hover:text-white transition">FAQ</a>
+    </div>
+    <div class="hidden lg:flex items-center gap-3">
+      <button onclick="showToast('Login portal coming soon')" class="px-5 py-2.5 text-sm font-semibold text-white/80 hover:text-white transition">Login</button>
+      <a href="#accounts" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#6d28ff] to-[#a855f7] text-sm font-bold shadow-[0_0_20px_rgba(109,40,255,0.4)] hover:shadow-[0_0_30px_rgba(109,40,255,0.6)] hover:scale-[1.02] transition">Get Funded</a>
+    </div>
+    <button id="mobileBtn" class="lg:hidden w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center"><i class="ri-menu-line text-xl"></i></button>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-white/10 bg-[#070a2a] px-4 py-6 space-y-1">
+    <a href="#home" class="block py-3 text-white font-medium">Home</a>
+    <a href="#accounts" class="block py-3 text-white/70">Accounts</a>
+    <a href="#how-it-works" class="block py-3 text-white/70">How It Works</a>
+    <a href="#trading-rules" class="block py-3 text-white/70">Trading Rules</a>
+    <a href="#faq" class="block py-3 text-white/70">FAQ</a>
+    <div class="pt-4 flex gap-3">
+      <button onclick="showToast('Login portal coming soon')" class="flex-1 py-3 rounded-full border border-white/15 font-semibold">Login</button>
+      <a href="#accounts" class="flex-1 py-3 rounded-full bg-gradient-to-r from-[#6d28ff] to-[#a855f7] text-center font-bold">Get Funded</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="relative overflow-hidden pt-[68px]">
+  <div class="absolute inset-0 bg-[#04061a]"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_900px_600px_at_20%_80%,rgba(91,33,255,0.18),transparent_60%),radial-gradient(ellipse_800px_500px_at_90%_10%,rgba(124,58,237,0.12),transparent_60%)]"></div>
+  <!-- diagonal beams -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="beam-thick left-[-10%] top-[18%] w-[42%] hidden md:block"></div>
+    <div class="beam left-[-5%] top-[26%] w-[38%] hidden md:block"></div>
+    <div class="beam-thick right-[-6%] top-[14%] w-[44%]"></div>
+    <div class="beam right-[-4%] top-[24%] w-[40%]"></div>
+    <div class="beam right-[2%] top-[58%] w-[38%]"></div>
+    <div class="absolute left-[6%] top-[34%] hidden lg:block opacity-90">
+      <svg width="220" height="140" viewBox="0 0 220 140" fill="none">
+        <rect x="10" y="90" width="18" height="40" rx="2" fill="rgba(91,33,255,0.18)"/>
+        <rect x="36" y="75" width="18" height="55" rx="2" fill="rgba(91,33,255,0.28)"/>
+        <rect x="62" y="60" width="18" height="70" rx="2" fill="rgba(109,40,255,0.45)"/>
+        <rect x="88" y="36" width="18" height="94" rx="2" fill="rgba(124,58,237,0.7)"/>
+        <path d="M8 82 L45 50 L58 65 L92 22 L108 30 L100 68 L88 60 L60 88 L43 72 Z" fill="#5b21ff"/>
+        <path d="M92 22 L108 30 L100 68" stroke="none" fill="#5b21ff"/>
+      </svg>
+    </div>
+    <div class="absolute right-[9%] top-[45%] hidden lg:block opacity-70">
+      <svg width="180" height="120" viewBox="0 0 180 120" fill="none">
+        <rect x="10" y="70" width="14" height="22" rx="2" fill="rgba(91,33,255,0.15)"/>
+        <rect x="30" y="58" width="14" height="34" rx="2" fill="rgba(91,33,255,0.22)"/>
+        <rect x="50" y="45" width="14" height="47" rx="2" fill="rgba(91,33,255,0.3)"/>
+        <rect x="70" y="32" width="14" height="60" rx="2" fill="rgba(124,58,237,0.45)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Brand banner image prominently -->
+  <div class="relative max-w-[1280px] mx-auto px-4 md:px-6 pt-8 md:pt-10">
+    <div class="relative mx-auto max-w-[760px] rounded-[20px] overflow-hidden border border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.6),0_0_40px_rgba(109,40,255,0.25)] bg-[#070a2a]">
+      <img src="https://www.designarena.ai/u/e8c5c3a2-939a-4e2e-9569-8a364b024f1e" alt="ZeeFunded Official Brand Banner" class="w-full h-auto object-cover">
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[70%] h-[1px] bg-gradient-to-r from-transparent via-[#7c3aed] to-transparent shadow-[0_0_12px_#7c3aed]"></div>
+    </div>
+    <div class="glow-line w-[60%] mx-auto mt-5 max-w-[560px] opacity-60"></div>
+  </div>
+
+  <div class="relative max-w-[1280px] mx-auto px-4 md:px-6 py-10 md:py-14 grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
+    <!-- left -->
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs font-medium backdrop-blur">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.8)]"></span>
+        Trusted by 12,000+ traders worldwide
+        <span class="hidden sm:inline-flex items-center gap-1 ml-2 pl-2 border-l border-white/10"><i class="ri-star-fill text-amber-400 text-[11px]"></i> 4.8/5 on Trustpilot</span>
+      </div>
+      <h1 class="font-display font-bold text-[36px] md:text-[52px] leading-[0.95] tracking-tight mt-6">
+        Trade Your<br>
+        Strategy. <span class="bg-gradient-to-r from-[#6d28ff] via-[#8b5cf6] to-[#ff3bd4] bg-clip-text text-transparent">Get Funded.</span>
+      </h1>
+      <p class="text-[16px] md:text-[17px] leading-relaxed text-white/60 mt-5 max-w-[560px]">
+        Trade with ZeeFunded and access funded trading opportunities designed for traders who want flexibility, clear rules, and an opportunity to scale.
+      </p>
+      <div class="flex flex-wrap gap-3 mt-8">
+        <a href="#accounts" class="px-8 py-4 rounded-full bg-gradient-to-r from-[#6d28ff] to-[#a855f7] font-bold text-[15px] shadow-[0_10px_30px_rgba(109,40,255,0.4)] hover:shadow-[0_15px_40px_rgba(109,40,255,0.55)] hover:scale-[1.02] transition flex items-center gap-2">Get Funded <i class="ri-arrow-right-line"></i></a>
+        <a href="#accounts" class="px-8 py-4 rounded-full bg-white text-[#0a0d2a] font-bold text-[15px] hover:bg-white/90 transition flex items-center gap-2">View Accounts <i class="ri-layout-grid-line"></i></a>
+      </div>
+      <div class="flex flex-wrap gap-6 mt-8 pt-8 border-t border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><i class="ri-percent-line text-[#a855f7]"></i></div>
+          <div><div class="font-bold leading-none">80% Profit Split</div><div class="text-xs text-white/50">Keep more of what you earn</div></div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><i class="ri-time-line text-[#a855f7]"></i></div>
+          <div><div class="font-bold leading-none">3 Day Minimum</div><div class="text-xs text-white/50">Consistency over speed</div></div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><i class="ri-flashlight-line text-[#a855f7]"></i></div>
+          <div><div class="font-bold leading-none">Instant Funding</div><div class="text-xs text-white/50">No challenge needed</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- right visual -->
+    <div class="relative lg:pl-6">
+      <div class="relative bg-gradient-to-b from-[#12153a]/90 to-[#0a0c26]/90 backdrop-blur-xl rounded-[28px] border border-white/[0.08] p-5 md:p-6 shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-[#6d28ff]/20 rounded-full blur-[60px] pointer-events-none"></div>
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center"><span class="font-black text-[#0a0d2a] text-sm">ZF</span></div>
+            <div><div class="text-xs font-bold tracking-widest text-white/50">ZEEFUNDED</div><div class="text-sm font-bold -mt-1">Trading Dashboard</div></div>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold border border-emerald-500/20 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE</span>
+        </div>
+        <!-- chart -->
+        <div class="rounded-2xl bg-[#070a2a] border border-white/5 p-4">
+          <div class="flex items-center justify-between mb-4">
+            <div><div class="text-[11px] tracking-widest text-white/40 font-bold">ACCOUNT EQUITY</div><div class="text-xl font-black">$27,842.50 <span class="text-emerald-400 text-sm font-bold">+2.84%</span></div></div>
+            <div class="flex gap-1.5">
+              <span class="px-2 py-1 rounded-lg bg-white/5 text-[11px] font-bold text-white/60">1D</span>
+              <span class="px-2 py-1 rounded-lg bg-[#6d28ff] text-[11px] font-bold">1W</span>
+              <span class="px-2 py-1 rounded-lg bg-white/5 text-[11px] font-bold text-white/60">1M</span>
+            </div>
+          </div>
+          <div class="h-[140px] flex items-end gap-[3px] relative">
+            <!-- grid lines -->
+            <div class="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
+              <div class="h-[1px] bg-white/[0.04]"></div><div class="h-[1px] bg-white/[0.04]"></div><div class="h-[1px] bg-white/[0.04]"></div>
+            </div>
+            <!-- bars -->
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gradient-to-t from-[#6d28ff] to-[#a855f7] rounded-t" style="height:68px"></div><div class="w-[2px] h-3 bg-white/20 -mt-1"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-white/10 rounded-t" style="height:92px"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gradient-to-t from-[#6d28ff] to-[#a855f7] rounded-t" style="height:112px"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-white/10 rounded-t" style="height:78px"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gradient-to-t from-[#6d28ff] to-[#a855f7] rounded-t" style="height:128px"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gradient-to-t from-[#6d28ff] to-[#a855f7] rounded-t" style="height:138px"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-white/10 rounded-t" style="height:108px"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gradient-to-t from-[#6d28ff] to-[#a855f7] rounded-t" style="height:122px"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-gradient-to-t from-[#6d28ff] to-[#c084fc] rounded-t shadow-[0_0_12px_rgba(168,85,247,0.6)]" style="height:146px"></div></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-white/30 mt-2 font-medium"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-4">
+          <div class="rounded-2xl bg-[#070a2a] border border-white/5 p-4">
+            <div class="text-[11px] tracking-widest font-bold text-white/40">PROFIT SPLIT</div>
+            <div class="text-2xl font-black mt-1">80%</div>
+            <div class="text-xs text-emerald-400 font-semibold">You keep 80% of profits</div>
+          </div>
+          <div class="rounded-2xl bg-gradient-to-br from-[#6d28ff] to-[#a855f7] p-4 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+            <div class="text-[11px] tracking-widest font-bold text-white/70">NEXT PAYOUT</div>
+            <div class="text-2xl font-black mt-1">On Demand</div>
+            <div class="text-xs text-white/80 font-medium">Request when ready*</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 mt-4 text-[11px] text-white/40"><i class="ri-shield-check-line text-emerald-400"></i> No Daily Loss Limit on Instant • 30% Consistency Rule</div>
+      </div>
+      <!-- floating badge -->
+      <div class="absolute -bottom-4 -left-2 md:-left-4 bg-white text-[#0a0d2a] rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3 border border-black/5">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-white"><i class="ri-arrow-right-up-line text-xl"></i></div>
+        <div><div class="text-xs font-bold text-black/50">PAYOUT PROCESSED</div><div class="font-black">$4,240.00</div></div>
+      </div>
+    </div>
+  </div>
+  <!-- trust strip -->
+  <div class="relative border-y border-white/[0.06] bg-white/[0.02] backdrop-blur">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 py-4 flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div class="flex items-center gap-6 text-white/50 font-medium">
+        <span class="hidden md:inline">AS SEEN ON</span>
+        <span class="flex items-center gap-2 font-bold text-white/70"><i class="ri-global-line"></i> TradingView</span>
+        <span class="flex items-center gap-2 font-bold text-white/70"><i class="ri-funds-line"></i> ForexFactory</span>
+        <span class="flex items-center gap-2 font-bold text-white/70"><i class="ri-bit-coin-line"></i> Investing.com</span>
+      </div>
+      <div class="flex items-center gap-4 ml-auto">
+        <span class="flex items-center gap-1.5 text-white/60"><i class="ri-visa-line text-lg"></i> <i class="ri-mastercard-line text-lg"></i> <i class="ri-paypal-line text-lg"></i> Crypto</span>
+        <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold"><i class="ri-lock-2-line"></i> Secure Payments</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNTS -->
+<section id="accounts" class="relative py-16 md:py-20">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    <div class="text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#6d28ff]/10 border border-[#6d28ff]/20 text-xs font-bold tracking-widest text-[#a78bfa]">CHOOSE YOUR PATH</div>
+      <h2 class="font-display font-bold text-[32px] md:text-[44px] leading-tight mt-4">Find Your Funding Program</h2>
+      <p class="text-white/60 mt-3 text-[15px] leading-relaxed">Select the account type that matches your trading style. All programs feature clear rules and competitive profit splits. <span class="text-white/80 font-medium">Prices & rules are editable placeholders — update via the config.</span></p>
+    </div>
+
+    <!-- program toggle -->
+    <div class="flex justify-center mt-8">
+      <div class="inline-flex p-1 rounded-full bg-white/[0.06] border border-white/10">
+        <button class="prog-tab active px-5 py-2.5 rounded-full bg-white text-[#0a0d2a] font-bold text-sm shadow" data-filter="all">All Programs</button>
+        <button class="prog-tab px-5 py-2.5 rounded-full text-white/60 font-semibold text-sm hover:text-white transition" data-filter="instant">Instant</button>
+        <button class="prog-tab px-5 py-2.5 rounded-full text-white/60 font-semibold text-sm hover:text-white transition" data-filter="1step">1-Step</button>
+        <button class="prog-tab px-5 py-2.5 rounded-full text-white/60 font-semibold text-sm hover:text-white transition" data-filter="2step">2-Step</button>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6 md:gap-7 mt-10">
+      <!-- INSTANT -->
+      <div data-card="instant" class="account-card group relative rounded-[28px] p-[1px] bg-gradient-to-b from-[#a855f7]/40 via-white/10 to-white/5 hover:from-[#a855f7]/60 transition">
+        <div class="relative rounded-[27px] bg-gradient-to-b from-[#171a44] to-[#0d0f2e] p-6 md:p-7 h-full flex flex-col overflow-hidden">
+          <div class="absolute -top-20 -right-20 w-56 h-56 bg-[#6d28ff]/15 rounded-full blur-[40px]"></div>
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-[#ff8a00] to-[#ff3b30] text-xs font-black text-white shadow">MOST POPULAR</div>
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#6d28ff] to-[#a855f7] flex items-center justify-center shadow-[0_0_20px_rgba(109,40,255,0.4)]"><i class="ri-flashlight-line text-white text-xl"></i></div>
+          <h3 class="font-display font-bold text-[18px] tracking-wide mt-4">INSTANT FUNDING</h3>
+          <p class="text-xs text-white/50 mt-1">Start trading immediately — no challenge</p>
+
+          <div class="flex flex-wrap gap-1.5 mt-5" data-size-wrap="instant">
+            <!-- generated by JS -->
+          </div>
+
+          <div class="mt-5 flex items-baseline gap-2">
+            <span class="text-[38px] font-black tracking-tight">$<span data-price="instant">249</span></span>
+            <span class="text-sm text-white/40 line-through" data-compare="instant">$299</span>
+            <span class="ml-auto px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold border border-emerald-500/20">No Daily Loss</span>
+          </div>
+          <div class="text-xs text-white/40 -mt-1">one-time fee • <span data-size-label="instant">$25K Account</span></div>
+
+          <div class="mt-6 space-y-2.5 text-[13px]">
+            <div class="flex justify-between py-2.5 px-3 rounded-xl bg-white/[0.04] border border-white/[0.04]"><span class="text-white/50">Profit Target</span><span class="font-bold" data-field="profitTarget">— None</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Maximum Loss Limit</span><span class="font-bold text-amber-300" data-field="maxLoss">6%</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Daily Loss Limit</span><span class="font-bold text-emerald-400" data-field="dailyLoss">No Limit ✓</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Minimum Trading Days</span><span class="font-bold" data-field="minDays">3 Days</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Consistency Rule</span><span class="font-bold" data-field="consistency">30%</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Profit Split</span><span class="font-bold text-[#a78bfa]" data-field="split">80%</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Payouts</span><span class="font-medium text-white/70 text-xs" data-field="payout">On-demand*</span></div>
+          </div>
+
+          <button onclick="handleStart('Instant', 'instant')" class="mt-6 w-full py-3.5 rounded-full bg-white text-[#0a0d2a] font-black text-sm hover:bg-white/90 transition flex items-center justify-center gap-2">Start Trading <i class="ri-arrow-right-line"></i></button>
+          <div class="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-white/30"><i class="ri-information-line"></i> Trading restrictions: None</div>
+          <div class="mt-4 pt-4 border-t border-white/5 space-y-1.5 text-xs text-white/45">
+            <div class="flex gap-2"><i class="ri-check-line text-emerald-400 mt-0.5"></i> Instant access to funded account</div>
+            <div class="flex gap-2"><i class="ri-check-line text-emerald-400 mt-0.5"></i> Keep 80% of profits</div>
+            <div class="flex gap-2"><i class="ri-check-line text-emerald-400 mt-0.5"></i> Max loss limit applies, no daily limit</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1-STEP -->
+      <div data-card="1step" class="account-card group relative rounded-[28px] p-[1px] bg-white/[0.07] hover:bg-white/[0.12] transition">
+        <div class="relative rounded-[27px] bg-gradient-to-b from-[#12153a] to-[#0a0c26] p-6 md:p-7 h-full flex flex-col">
+          <div class="w-12 h-12 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center"><i class="ri-route-line text-white/80 text-xl"></i></div>
+          <h3 class="font-display font-bold text-[18px] tracking-wide mt-4">1-STEP CHALLENGE</h3>
+          <p class="text-xs text-white/50 mt-1">One phase to prove consistency</p>
+          <div class="inline-flex items-center gap-1.5 mt-3 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-bold text-white/60"><i class="ri-time-line"></i> Fastest challenge</div>
+
+          <div class="flex flex-wrap gap-1.5 mt-5" data-size-wrap="1step"></div>
+
+          <div class="mt-5 flex items-baseline gap-2">
+            <span class="text-[38px] font-black tracking-tight">$<span data-price="1step">189</span></span>
+            <span class="text-sm text-white/40 line-through" data-compare="1step">$229</span>
+            <span class="ml-auto px-2.5 py-1 rounded-full bg-white/10 text-white/70 text-xs font-bold">8% Target</span>
+          </div>
+          <div class="text-xs text-white/40 -mt-1">one-time fee • <span data-size-label="1step">$25K Account</span></div>
+
+          <div class="mt-6 space-y-2 text-[13px]">
+            <div class="flex justify-between py-2.5 px-3 rounded-xl bg-white/[0.04] border border-white/[0.04]"><span class="text-white/50">Profit Target</span><span class="font-bold" data-field="profitTarget">8% — <span class="text-white/40 text-xs">Editable</span></span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Maximum Loss</span><span class="font-bold" data-field="maxLoss">6% <span class="text-white/40 text-xs">Placeholder</span></span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Daily Loss</span><span class="font-bold" data-field="dailyLoss">3% — Editable</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Min Trading Days</span><span class="font-bold" data-field="minDays">3 Days*</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Consistency</span><span class="font-bold" data-field="consistency">— Editable</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Profit Split</span><span class="font-bold text-[#a78bfa]" data-field="split">80%*</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Payouts</span><span class="font-medium text-white/70 text-xs" data-field="payout">Bi-weekly*</span></div>
+          </div>
+          <button onclick="handleStart('1-Step', '1step')" class="mt-6 w-full py-3.5 rounded-full bg-gradient-to-r from-[#6d28ff] to-[#a855f7] font-black text-sm shadow-[0_8px_20px_rgba(109,40,255,0.35)] hover:shadow-[0_12px_30px_rgba(109,40,255,0.5)] transition flex items-center justify-center gap-2">Start Challenge <i class="ri-arrow-right-line"></i></button>
+          <div class="mt-3 text-center text-[11px] text-white/30">* Editable placeholders — configure in ZEE_CONFIG</div>
+        </div>
+      </div>
+
+      <!-- 2-STEP -->
+      <div data-card="2step" class="account-card group relative rounded-[28px] p-[1px] bg-white/[0.07] hover:bg-white/[0.12] transition">
+        <div class="relative rounded-[27px] bg-gradient-to-b from-[#12153a] to-[#0a0c26] p-6 md:p-7 h-full flex flex-col">
+          <div class="w-12 h-12 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center"><i class="ri-stack-line text-white/80 text-xl"></i></div>
+          <h3 class="font-display font-bold text-[18px] tracking-wide mt-4">2-STEP CHALLENGE</h3>
+          <p class="text-xs text-white/50 mt-1">Classic evaluation — two phases</p>
+          <div class="inline-flex items-center gap-1.5 mt-3 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-bold text-emerald-400">Lowest Price • Most Flexible</div>
+
+          <div class="flex flex-wrap gap-1.5 mt-5" data-size-wrap="2step"></div>
+
+          <div class="mt-5 flex items-baseline gap-2">
+            <span class="text-[38px] font-black tracking-tight">$<span data-price="2step">139</span></span>
+            <span class="text-sm text-white/40 line-through" data-compare="2step">$179</span>
+            <span class="ml-auto px-2.5 py-1 rounded-full bg-white/10 text-white/70 text-xs font-bold">8% / 5%</span>
+          </div>
+          <div class="text-xs text-white/40 -mt-1">one-time fee • <span data-size-label="2step">$25K Account</span></div>
+
+          <div class="mt-6 space-y-2 text-[13px]">
+            <div class="flex justify-between py-2.5 px-3 rounded-xl bg-white/[0.04] border border-white/[0.04]"><span class="text-white/50">Profit Target</span><span class="font-bold" data-field="profitTarget">8% / 5%</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Maximum Loss</span><span class="font-bold" data-field="maxLoss">8% <span class="text-white/40 text-xs">Placeholder</span></span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Daily Loss</span><span class="font-bold" data-field="dailyLoss">4% — Editable</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Min Trading Days</span><span class="font-bold" data-field="minDays">3 Days*</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Consistency</span><span class="font-bold" data-field="consistency">— Editable</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Profit Split</span><span class="font-bold text-[#a78bfa]" data-field="split">80%*</span></div>
+            <div class="flex justify-between py-2 px-3"><span class="text-white/50">Payouts</span><span class="font-medium text-white/70 text-xs" data-field="payout">Bi-weekly*</span></div>
+          </div>
+          <button onclick="handleStart('2-Step', '2step')" class="mt-6 w-full py-3.5 rounded-full bg-white/10 border border-white/15 font-bold text-sm hover:bg-white/15 transition flex items-center justify-center gap-2">Start Challenge <i class="ri-arrow-right-line"></i></button>
+          <div class="mt-3 text-center text-[11px] text-white/30">Best for disciplined traders • Editable</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- comparison table -->
+    <div class="mt-10 rounded-[24px] border border-white/10 overflow-hidden bg-white/[0.02] backdrop-blur">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm min-w-[720px]">
+          <thead>
+            <tr class="bg-white/[0.04] text-xs tracking-widest font-bold text-white/50">
+              <th class="text-left px-6 py-4 font-bold">FEATURE</th>
+              <th class="text-center px-6 py-4"><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#a855f7]"></span> INSTANT</span></th>
+              <th class="text-center px-6 py-4">1-STEP</th>
+              <th class="text-center px-6 py-4">2-STEP</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-[13px]">
+            <tr><td class="px-6 py-3 text-white/60">Profit Target</td><td class="text-center font-bold">None</td><td class="text-center">8% (editable)</td><td class="text-center">8% → 5%</td></tr>
+            <tr><td class="px-6 py-3 text-white/60">Maximum Loss Limit</td><td class="text-center font-bold">Applies (editable %)</td><td class="text-center">Applies*</td><td class="text-center">Applies*</td></tr>
+            <tr><td class="px-6 py-3 text-white/60">Daily Loss Limit</td><td class="text-center text-emerald-400 font-bold">No Limit ✓</td><td class="text-center">Yes*</td><td class="text-center">Yes*</td></tr>
+            <tr><td class="px-6 py-3 text-white/60">Min Trading Days</td><td class="text-center font-bold">3</td><td class="text-center">3*</td><td class="text-center">3* each phase</td></tr>
+            <tr><td class="px-6 py-3 text-white/60">Consistency Rule</td><td class="text-center font-bold">30%</td><td class="text-center text-white/40">— editable</td><td class="text-center text-white/40">— editable</td></tr>
+            <tr><td class="px-6 py-3 text-white/60">Profit Split</td><td class="text-center font-bold text-[#a78bfa]">80%</td><td class="text-center">80%*</td><td class="text-center">80%*</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-6 py-3 bg-[#6d28ff]/10 border-t border-white/5 text-xs text-white/50 flex flex-wrap gap-2 items-center"><i class="ri-information-line"></i> * Editable placeholders — update all values centrally in the ZEE_CONFIG object. Instant Funding rules are fixed per brief.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-14 md:py-18 bg-gradient-to-b from-transparent via-[#0a0c2a]/50 to-transparent border-y border-white/[0.04]">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-10">
+      <div>
+        <div class="text-xs font-bold tracking-[0.2em] text-[#a78bfa]">WHY ZEEFUNDED</div>
+        <h2 class="font-display font-bold text-[28px] md:text-[36px] leading-tight mt-2">Built for Serious Traders</h2>
+      </div>
+      <p class="max-w-[520px] text-white/60 text-sm leading-relaxed">A professional environment with flexible funding options, clear rules, and a simple selection experience — no hidden restrictions.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="group rounded-[20px] p-[1px] bg-white/[0.06] hover:bg-white/[0.12] transition">
+        <div class="rounded-[19px] bg-[#0f1230] p-6 h-full">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6d28ff]/30 to-[#a855f7]/30 border border-white/10 flex items-center justify-center"><i class="ri-scales-3-line text-[#a78bfa]"></i></div>
+          <h3 class="font-bold mt-4">Flexible Trading</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">Trade your strategy with no unnecessary restrictions — per ZeeFunded rules, no prohibited strategies beyond standard risk protections.</p>
+        </div>
+      </div>
+      <div class="group rounded-[20px] p-[1px] bg-white/[0.06] hover:bg-white/[0.12] transition">
+        <div class="rounded-[19px] bg-[#0f1230] p-6 h-full">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6d28ff]/30 to-[#a855f7]/30 border border-white/10 flex items-center justify-center"><i class="ri-stack-line text-[#a78bfa]"></i></div>
+          <h3 class="font-bold mt-4">Multiple Funding Options</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">Choose Instant, 1-Step or 2-Step — each crafted for different trader profiles and timelines.</p>
+        </div>
+      </div>
+      <div class="group rounded-[20px] p-[1px] bg-white/[0.06] hover:bg-white/[0.12] transition">
+        <div class="rounded-[19px] bg-[#0f1230] p-6 h-full">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6d28ff]/30 to-[#a855f7]/30 border border-white/10 flex items-center justify-center"><i class="ri-file-list-3-line text-[#a78bfa]"></i></div>
+          <h3 class="font-bold mt-4">Clear Trading Rules</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">Maximum loss, consistency and payout rules displayed transparently — centrally editable, no fine-print surprises.</p>
+        </div>
+      </div>
+      <div class="group rounded-[20px] p-[1px] bg-white/[0.06] hover:bg-white/[0.12] transition">
+        <div class="rounded-[19px] bg-[#0f1230] p-6 h-full">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6d28ff]/30 to-[#a855f7]/30 border border-white/10 flex items-center justify-center"><i class="ri-percent-line text-[#a78bfa]"></i></div>
+          <h3 class="font-bold mt-4">Competitive Profit Split</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">80% profit split on Instant Funding — keep the majority of what you earn. Other programs configurable.</p>
+        </div>
+      </div>
+      <div class="group rounded-[20px] p-[1px] bg-white/[0.06] hover:bg-white/[0.12] transition">
+        <div class="rounded-[19px] bg-[#0f1230] p-6 h-full">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6d28ff]/30 to-[#a855f7]/30 border border-white/10 flex items-center justify-center"><i class="ri-cursor-line text-[#a78bfa]"></i></div>
+          <h3 class="font-bold mt-4">Simple Account Selection</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">Interactive cards, instant price updates, and side-by-side comparison so you decide in seconds.</p>
+        </div>
+      </div>
+      <div class="group rounded-[20px] p-[1px] bg-white/[0.06] hover:bg-white/[0.12] transition">
+        <div class="rounded-[19px] bg-[#0f1230] p-6 h-full">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6d28ff]/30 to-[#a855f7]/30 border border-white/10 flex items-center justify-center"><i class="ri-team-line text-[#a78bfa]"></i></div>
+          <h3 class="font-bold mt-4">Professional Environment</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">Premium execution, supportive community, and scaling opportunities for consistent traders.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="py-16 md:py-20">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    <div class="text-center">
+      <div class="inline-flex px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold tracking-widest text-white/60">HOW IT WORKS</div>
+      <h2 class="font-display font-bold text-[32px] md:text-[42px] mt-3">Get Funded in 3 Simple Steps</h2>
+      <p class="text-white/50 mt-2 text-sm">From selection to payout — streamlined for clarity.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mt-10 relative">
+      <div class="hidden md:block absolute top-[46px] left-[16%] right-[16%] h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <div class="relative rounded-[24px] p-[1px] bg-white/[0.07]">
+        <div class="rounded-[23px] bg-[#0f1230] p-7 text-center relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#6d28ff] text-xs font-black">01</div>
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-[#6d28ff] to-[#a855f7] flex items-center justify-center shadow-[0_10px_30px_rgba(109,40,255,0.4)] mt-4"><i class="ri-shopping-bag-3-line text-2xl"></i></div>
+          <h3 class="font-bold text-lg mt-5">Choose Your Account</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">Pick Instant, 1-Step or 2-Step and select your account size. Transparent pricing, no hidden fees.</p>
+          <div class="mt-4 inline-flex items-center gap-2 text-xs font-bold text-[#a78bfa]">Explore accounts <i class="ri-arrow-right-line"></i></div>
+        </div>
+      </div>
+      <div class="relative rounded-[24px] p-[1px] bg-white/[0.07]">
+        <div class="rounded-[23px] bg-[#0f1230] p-7 text-center relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-[#0a0d2a] text-xs font-black">02</div>
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mt-4"><i class="ri-line-chart-line text-2xl text-white/80"></i></div>
+          <h3 class="font-bold text-lg mt-5">Trade Your Strategy</h3><p class="text-sm text-white/50 mt-2 leading-relaxed">Trade with clear risk parameters. Meet consistency and minimum day requirements where applicable.</p>
+          <div class="mt-4 inline-flex items-center gap-2 text-xs font-bold text-white/60">View trading rules <i class="ri-arrow-right-line"></i></div>
+        </div>
+      </div>
+      <div class="relative rounded-[24px] p-[1px] bg-gradient-to-b from-[#a855f7]/30 to-white/5">
+        <div class="rounded-[23px] bg-gradient-to-b from-[#1a1550] to-[#0f1230] p-7 text-center relative overflow-hidden">
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#a855f7]/20 rounded-full blur-2xl"></div>
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-emerald-500 text-white text-xs font-black">03</div>
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500 flex items-center justify-center shadow-[0_10px_30px_rgba(16,185,129,0.4)] mt-4"><i class="ri-hand-coin-line text-2xl"></i></div>
+          <h3 class="font-bold text-lg mt-5">Get Funded & Earn</h3><p class="text-sm text-white/60 mt-2 leading-relaxed">Successful traders are funded and can request payouts per ZeeFunded account rules.</p>
+          <div class="mt-4 inline-flex items-center gap-2 text-xs font-bold text-emerald-400">Payout details <i class="ri-arrow-right-line"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYOUT -->
+<section class="py-14">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    <div class="rounded-[28px] p-[1px] bg-gradient-to-br from-[#6d28ff]/30 via-white/5 to-[#a855f7]/20">
+      <div class="rounded-[27px] bg-gradient-to-br from-[#0f1230] to-[#070a28] p-6 md:p-10 grid lg:grid-cols-2 gap-8 items-center overflow-hidden relative">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#6d28ff]/10 rounded-full blur-[80px] pointer-events-none"></div>
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400"><i class="ri-money-dollar-circle-line"></i> PAYOUTS</div>
+          <h2 class="font-display font-bold text-[30px] md:text-[38px] leading-tight mt-4">Your Profits,<br>Your Schedule.</h2>
+          <p class="text-white/60 mt-4 leading-relaxed text-[14.5px]">Successful traders can request payouts according to the applicable ZeeFunded account rules. No invented caps, frequencies or waiting periods are displayed here — all payout conditions are centrally configurable and will be shown exactly as defined by ZeeFunded.</p>
+          <ul class="mt-6 space-y-3 text-sm">
+            <li class="flex gap-3"><span class="w-6 h-6 rounded-full bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center shrink-0"><i class="ri-check-line text-emerald-400 text-sm"></i></span><span><b>80% profit split</b> on Instant Funding — you keep the majority.</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0"><i class="ri-check-line text-white/60 text-sm"></i></span><span>On-demand requests where eligible — editable payout rules.</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0"><i class="ri-check-line text-white/60 text-sm"></i></span><span>Clear eligibility based on consistency & minimum days.</span></li>
+          </ul>
+          <button onclick="showToast('Payout policy: editable in ZEE_CONFIG • Contact support for current schedule')" class="mt-7 px-6 py-3 rounded-full bg-white text-[#0a0d2a] font-bold text-sm hover:bg-white/90 transition">View Payout Rules</button>
+          <div class="mt-3 text-xs text-white/30">* Payout caps, frequency & waiting period — placeholders, configure as provided.</div>
+        </div>
+        <div class="relative">
+          <div class="rounded-[20px] bg-[#070a2a] border border-white/10 p-5 shadow-xl">
+            <div class="flex items-center justify-between">
+              <div class="text-xs font-bold tracking-widest text-white/40">PAYOUT TIMELINE</div>
+              <span class="px-2 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-black">ELIGIBLE</span>
+            </div>
+            <div class="mt-6 space-y-4 relative">
+              <div class="absolute left-[15px] top-2 bottom-6 w-[2px] bg-gradient-to-b from-[#6d28ff] via-[#a855f7]/50 to-transparent"></div>
+              <div class="flex gap-4 relative"><div class="w-8 h-8 rounded-full bg-[#6d28ff] flex items-center justify-center shrink-0"><i class="ri-check-line text-white"></i></div><div><div class="font-bold text-sm">Trading Period Complete</div><div class="text-xs text-white/50">Min 3 days • 30% consistency met</div></div><div class="ml-auto text-xs font-bold text-white/40">Done</div></div>
+              <div class="flex gap-4 relative"><div class="w-8 h-8 rounded-full bg-[#6d28ff] flex items-center justify-center shrink-0"><i class="ri-check-line text-white"></i></div><div><div class="font-bold text-sm">Profit Split Calculated</div><div class="text-xs text-white/50">80% to trader</div></div><div class="ml-auto text-xs font-bold text-white/40">Done</div></div>
+              <div class="flex gap-4 relative"><div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 animate-pulse"><i class="ri-send-plane-line text-[#6d28ff]"></i></div><div><div class="font-bold text-sm">Request Payout</div><div class="text-xs text-white/50">On-demand where eligible</div></div><div class="ml-auto"><button onclick="showToast('Payout request simulated • Would open payout portal')" class="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#6d28ff] to-[#a855f7] text-xs font-bold">Request</button></div></div>
+            </div>
+            <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+              <div class="rounded-xl bg-white/[0.04] border border-white/5 p-3"><div class="text-[11px] text-white/40 font-bold">TOTAL PAID</div><div class="font-black">$1.2M+</div></div>
+              <div class="rounded-xl bg-white/[0.04] border border-white/5 p-3"><div class="text-[11px] text-white/40 font-bold">AVG TIME</div><div class="font-black">24H*</div></div>
+              <div class="rounded-xl bg-white/[0.04] border border-white/5 p-3"><div class="text-[11px] text-white/40 font-bold">SPLIT</div><div class="font-black text-[#a78bfa]">80%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRADING RULES -->
+<section id="trading-rules" class="py-16 md:py-20">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    <div class="flex flex-wrap items-start justify-between gap-6">
+      <div>
+        <div class="text-xs font-bold tracking-[0.2em] text-[#a78bfa]">TRANSPARENCY FIRST</div>
+        <h2 class="font-display font-bold text-[32px] md:text-[40px] mt-2">Trading Rules</h2>
+        <p class="text-white/50 text-sm mt-2 max-w-[620px]">All rules are centrally editable. Instant Funding values are fixed per your brief; 1-Step & 2-Step show editable placeholders.</p>
+      </div>
+      <div class="px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-bold flex items-center gap-2"><i class="ri-edit-2-line"></i> Editable via ZEE_CONFIG</div>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-2" id="rulesTabs">
+      <button class="rule-tab active px-4 py-2.5 rounded-full bg-white text-[#0a0d2a] font-bold text-sm" data-tab="maxLoss">Maximum Loss</button>
+      <button class="rule-tab px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-semibold text-sm hover:bg-white/10" data-tab="dailyLoss">Daily Loss</button>
+      <button class="rule-tab px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-semibold text-sm hover:bg-white/10" data-tab="consistency">Consistency Rule</button>
+      <button class="rule-tab px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-semibold text-sm hover:bg-white/10" data-tab="minDays">Min Trading Days</button>
+      <button class="rule-tab px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-semibold text-sm hover:bg-white/10" data-tab="split">Profit Split</button>
+      <button class="rule-tab px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-semibold text-sm hover:bg-white/10" data-tab="payout">Payout Rules</button>
+      <button class="rule-tab px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-semibold text-sm hover:bg-white/10" data-tab="prohibited">Prohibited</button>
+    </div>
+
+    <div class="mt-6 rounded-[24px] border border-white/10 bg-[#0f1230] overflow-hidden">
+      <div id="rule-maxLoss" class="rule-panel p-6 md:p-8 grid md:grid-cols-[1.2fr_0.8fr] gap-8">
+        <div>
+          <h3 class="font-bold text-lg flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/20 flex items-center justify-center"><i class="ri-alarm-warning-line text-amber-400"></i></span> Maximum Loss Limit</h3>
+          <p class="text-white/60 text-sm mt-3 leading-relaxed">The maximum overall loss allowed on the account. Applies to Instant Funding and both challenge phases. Value is editable in the central config — no fixed percentage is hard-coded here.</p>
+          <div class="mt-5 grid grid-cols-3 gap-3">
+            <div class="rounded-xl bg-[#070a2a] border border-white/5 p-4 text-center"><div class="text-xs text-white/40 font-bold">INSTANT</div><div class="font-black text-amber-300 mt-1">Applies</div><div class="text-xs text-white/30">*edit % in config</div></div>
+            <div class="rounded-xl bg-[#070a2a] border border-white/5 p-4 text-center"><div class="text-xs text-white/40 font-bold">1-STEP</div><div class="font-black mt-1">6%*</div><div class="text-xs text-white/30">placeholder</div></div>
+            <div class="rounded-xl bg-[#070a2a] border border-white/5 p-4 text-center"><div class="text-xs text-white/40 font-bold">2-STEP</div><div class="font-black mt-1">8%*</div><div class="text-xs text-white/30">placeholder</div></div>
+          </div>
+        </div>
+        <div class="rounded-2xl bg-[#070a2a] border border-white/5 p-5">
+          <div class="text-xs font-bold tracking-widest text-white/40">HOW IT WORKS</div>
+          <ul class="mt-3 space-y-2.5 text-sm text-white/70">
+            <li class="flex gap-2"><i class="ri-checkbox-circle-line text-[#a78bfa] mt-0.5"></i> Measured from initial balance + closed P/L</li>
+            <li class="flex gap-2"><i class="ri-checkbox-circle-line text-[#a78bfa] mt-0.5"></i> Breach = account review/closure per terms</li>
+            <li class="flex gap-2"><i class="ri-checkbox-circle-line text-[#a78bfa] mt-0.5"></i> Edit value: <code class="px-1.5 py-0.5 rounded bg-white/10 text-xs">ZEE_CONFIG.accounts[].maxLoss</code></li>
+          </ul>
+        </div>
+      </div>
+      <div id="rule-dailyLoss" class="rule-panel hidden p-6 md:p-8 grid md:grid-cols-[1.2fr_0.8fr] gap-8">
+        <div>
+          <h3 class="font-bold text-lg flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center"><i class="ri-calendar-close-line text-emerald-400"></i></span> Daily Loss Limit</h3>
+          <p class="text-white/60 text-sm mt-3 leading-relaxed"><b class="text-emerald-400">Instant Funding: No Daily Loss Limit.</b> 1-Step & 2-Step daily limits are editable placeholders — set to your intended values or disable.</p>
+          <div class="mt-5 flex gap-3">
+            <div class="flex-1 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-center"><div class="text-xs font-bold text-emerald-400">INSTANT</div><div class="font-black text-emerald-400 mt-1">No Limit ✓</div></div>
+            <div class="flex-1 rounded-xl bg-[#070a2a] border border-white/5 p-4 text-center"><div class="text-xs font-bold text-white/40">1-STEP</div><div class="font-black mt-1">3%* editable</div></div>
+            <div class="flex-1 rounded-xl bg-[#070a2a] border border-white/5 p-4 text-center"><div class="text-xs font-bold text-white/40">2-STEP</div><div class="font-black mt-1">4%* editable</div></div>
+          </div>
+        </div>
+        <div class="rounded-2xl bg-[#070a2a] border border-white/5 p-5 text-sm text-white/60 leading-relaxed">No daily limit on Instant gives maximum flexibility for swing and intraday traders, while challenge accounts can enforce intraday discipline via configurable limits.</div>
+      </div>
+      <div id="rule-consistency" class="rule-panel hidden p-6 md:p-8">
+        <h3 class="font-bold text-lg flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-[#6d28ff]/20 border border-[#6d28ff]/30 flex items-center justify-center"><i class="ri-scales-line text-[#a78bfa]"></i></span> Consistency Rule — 30% (Instant)</h3>
+        <p class="text-white/60 text-sm mt-3 max-w-3xl leading-relaxed">No single trading day should account for more than 30% of total profits. This promotes consistent performance over one-off spikes. For 1-Step/2-Step this rule is an editable placeholder (currently “—”) — enable or adjust to your policy.</p>
+        <div class="mt-5 p-4 rounded-xl bg-white/[0.04] border border-white/5 flex flex-wrap gap-6 text-sm"><span><b class="text-white">Instant:</b> 30%</span><span class="text-white/40"><b>1-Step:</b> — editable</span><span class="text-white/40"><b>2-Step:</b> — editable</span></div>
+      </div>
+      <div id="rule-minDays" class="rule-panel hidden p-6 md:p-8">
+        <h3 class="font-bold text-lg">Minimum Trading Days — 3 Days</h3>
+        <p class="text-white/60 text-sm mt-3">Instant Funding requires a minimum of 3 trading days to validate consistency. Challenges use the same minimum as an editable placeholder (adjust per phase if needed).</p>
+        <div class="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm"><i class="ri-time-line text-[#a78bfa]"></i> All programs: <b>3 Days</b> <span class="text-white/40">*editable</span></div>
+      </div>
+      <div id="rule-split" class="rule-panel hidden p-6 md:p-8">
+        <h3 class="font-bold text-lg">Profit Split — 80%</h3>
+        <p class="text-white/60 text-sm mt-3">Instant Funding profit split is fixed at 80% to trader. Challenge splits are editable placeholders currently set to 80%.</p>
+        <div class="mt-5 grid grid-cols-3 gap-3 max-w-lg"><div class="rounded-xl bg-[#6d28ff] p-4 text-center"><div class="text-xs font-bold text-white/70">INSTANT</div><div class="font-black text-xl">80%</div></div><div class="rounded-xl bg-white/5 border border-white/10 p-4 text-center"><div class="text-xs font-bold text-white/40">1-STEP</div><div class="font-black text-xl">80%*</div></div><div class="rounded-xl bg-white/5 border border-white/10 p-4 text-center"><div class="text-xs font-bold text-white/40">2-STEP</div><div class="font-black text-xl">80%*</div></div></div>
+      </div>
+      <div id="rule-payout" class="rule-panel hidden p-6 md:p-8">
+        <h3 class="font-bold text-lg">Payout Rules</h3>
+        <p class="text-white/60 text-sm mt-3 leading-relaxed">Successful traders can request payouts according to the applicable ZeeFunded account rules. No specific cap, frequency or waiting period is hard-coded — all are editable placeholders. Update <code class="px-1.5 py-0.5 rounded bg-white/10 text-xs">ZEE_CONFIG.payout</code> to publish exact policy.</p>
+        <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm text-amber-200">⚠️ Placeholder values currently: “On-demand* / Bi-weekly*” — replace with your legal payout terms before launch.</div>
+      </div>
+      <div id="rule-prohibited" class="rule-panel hidden p-6 md:p-8">
+        <h3 class="font-bold text-lg">Prohibited Activities</h3>
+        <p class="text-white/60 text-sm mt-3">Per brief: <b class="text-white">Trading restrictions: None.</b> Beyond standard risk & compliance protections, no strategies are prohibited. This section is fully editable — add exhaustive prohibited list (e.g., latency arbitrage, etc.) via config if needed.</p>
+        <div class="mt-5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-sm text-emerald-300 flex gap-2"><i class="ri-check-line text-lg"></i> Current policy: No strategy restrictions — trade your edge responsibly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-16 md:py-20 bg-white/[0.015] border-y border-white/[0.04]">
+  <div class="max-w-[960px] mx-auto px-4 md:px-6">
+    <div class="text-center">
+      <h2 class="font-display font-bold text-[32px] md:text-[40px]">Frequently Asked Questions</h2>
+      <p class="text-white/50 text-sm mt-2">Everything you need to know about ZeeFunded. Answers reflect editable config — update as policy evolves.</p>
+    </div>
+    <div class="mt-10 space-y-3" id="faqList">
+      <!-- FAQ items injected via JS for editability but also hardcoded fallback -->
+    </div>
+    <div class="mt-8 text-center">
+      <p class="text-sm text-white/50">Still have questions?</p>
+      <button onclick="showToast('Support chat opening • support@zeefunded.com')" class="mt-3 px-6 py-3 rounded-full bg-gradient-to-r from-[#6d28ff] to-[#a855f7] font-bold text-sm">Contact Support</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="pt-12 pb-8 bg-[#070a2a] border-t border-white/5">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    <div class="grid md:grid-cols-[1.4fr_0.8fr_0.8fr_1fr] gap-8 pb-10 border-b border-white/5">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6d28ff] to-[#b245ff] flex items-center justify-center"><span class="font-black text-white text-sm">ZF</span></div>
+          <span class="font-display font-bold text-xl">ZeeFunded</span>
+        </div>
+        <p class="text-sm text-white/50 mt-3 leading-relaxed max-w-[340px]">ZeeFunded provides funded trading opportunities for disciplined traders. Clear rules, flexible programs, and a professional environment to scale your strategy.</p>
+        <div class="flex gap-2 mt-5">
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition"><i class="ri-twitter-x-line text-white/70"></i></a>
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition"><i class="ri-discord-line text-white/70"></i></a>
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition"><i class="ri-instagram-line text-white/70"></i></a>
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition"><i class="ri-youtube-line text-white/70"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="font-bold text-sm tracking-widest text-white/40">QUICK LINKS</div>
+        <ul class="mt-4 space-y-2.5 text-sm text-white/60">
+          <li><a href="#home" class="hover:text-white">Home</a></li>
+          <li><a href="#accounts" class="hover:text-white">Accounts</a></li>
+          <li><a href="#how-it-works" class="hover:text-white">How It Works</a></li>
+          <li><a href="#trading-rules" class="hover:text-white">Trading Rules</a></li>
+          <li><a href="#faq" class="hover:text-white">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-bold text-sm tracking-widest text-white/40">PROGRAMS</div>
+        <ul class="mt-4 space-y-2.5 text-sm text-white/60">
+          <li><a href="#accounts" class="hover:text-white">Instant Funding</a></li>
+          <li><a href="#accounts" class="hover:text-white">1-Step Challenge</a></li>
+          <li><a href="#accounts" class="hover:text-white">2-Step Challenge</a></li>
+          <li><a href="#" onclick="showToast('Contact page soon');return false" class="hover:text-white">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-bold text-sm tracking-widest text-white/40">LEGAL</div>
+        <ul class="mt-4 space-y-2.5 text-sm text-white/60">
+          <li><a href="#" onclick="showToast('Terms & Conditions — placeholder');return false" class="hover:text-white">Terms & Conditions</a></li>
+          <li><a href="#" onclick="showToast('Privacy Policy — placeholder');return false" class="hover:text-white">Privacy Policy</a></li>
+          <li><a href="#" onclick="showToast('Risk Disclosure — see below');return false" class="hover:text-white">Risk Disclosure</a></li>
+          <li class="pt-2"><a href="#accounts" class="inline-flex px-5 py-2.5 rounded-full bg-gradient-to-r from-[#6d28ff] to-[#a855f7] text-white font-bold text-sm">Get Funded</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-6 rounded-2xl bg-amber-500/5 border border-amber-500/15 p-4 md:p-5">
+      <div class="flex gap-3">
+        <i class="ri-error-warning-line text-amber-400 text-xl shrink-0 mt-0.5"></i>
+        <div class="text-xs leading-relaxed text-white/50">
+          <b class="text-amber-200">Risk Disclosure:</b> Trading foreign exchange, futures, and other leveraged products involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results. The information on this website is for educational and informational purposes only and does not constitute investment advice. Only risk capital should be used for trading. ZeeFunded provides simulated funded accounts subject to its terms and evaluation criteria. Please read our full Terms & Conditions and Risk Disclosure before participating.
+        </div>
+      </div>
+    </div>
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/30">
+      <span>© 2025 ZeeFunded. All rights reserved. ZeeFunded™ is a brand of ZeeFunded Ltd.</span>
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> All systems operational • Support: support@zeefunded.com</span>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#1a1d3d] border border-white/10 text-white px-5 py-3 rounded-full shadow-2xl text-sm font-medium flex items-center gap-3 opacity-0 pointer-events-none translate-y-4 transition-all z-50">
+  <span class="w-7 h-7 rounded-full bg-[#6d28ff] flex items-center justify-center shrink-0"><i class="ri-check-line"></i></span>
+  <span id="toastMsg">Action successful</span>
+</div>
+
+<script>
+// ===== CENTRALIZED EDITABLE CONFIG =====
+const ZEE_CONFIG = {
+  accounts: {
+    instant: {
+      title: "INSTANT FUNDING",
+      subtitle: "Start trading immediately — no challenge",
+      badge: "MOST POPULAR",
+      sizes: [
+        { label: "$5K", sub: "$5K Account", price: 69, compare: "$85", maxLoss: "6%", dailyLoss: "No Limit ✓", profitTarget: "— None", minDays: "3 Days", consistency: "30%", split: "80%", payout: "On-demand*" },
+        { label: "$10K", sub: "$10K Account", price: 139, compare: "$169", maxLoss: "6%", dailyLoss: "No Limit ✓", profitTarget: "— None", minDays: "3 Days", consistency: "30%", split: "80%", payout: "On-demand*" },
+        { label: "$25K", sub: "$25K Account", price: 249, compare: "$299", maxLoss: "6%", dailyLoss: "No Limit ✓", profitTarget: "— None", minDays: "3 Days", consistency: "30%", split: "80%", payout: "On-demand*" },
+        { label: "$50K", sub: "$50K Account", price: 399, compare: "$479", maxLoss: "6%", dailyLoss: "No Limit ✓", profitTarget: "— None", minDays: "3 Days", consistency: "30%", split: "80%", payout: "On-demand*" },
+        { label: "$100K", sub: "$100K Account", price: 699, compare: "$849", maxLoss: "6%", dailyLoss: "No Limit ✓", profitTarget: "— None", minDays: "3 Days", consistency: "30%", split: "80%", payout: "On-demand*" },
+      ],
+      defaultIndex: 2,
+      notes: "Trading restrictions: None • Maximum Loss applies • No Daily Loss"
+    },
+    "1step": {
+      sizes: [
+        { label: "$5K", sub: "$5K Account", price: 49, compare: "$69", maxLoss: "6%*", dailyLoss: "4%* Editable", profitTarget: "8%*", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$10K", sub: "$10K Account", price: 99, compare: "$129", maxLoss: "6%*", dailyLoss: "4%* Editable", profitTarget: "8%*", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$25K", sub: "$25K Account", price: 189, compare: "$229", maxLoss: "6%*", dailyLoss: "3%* Editable", profitTarget: "8%*", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$50K", sub: "$50K Account", price: 309, compare: "$379", maxLoss: "6%*", dailyLoss: "3%* Editable", profitTarget: "8%*", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$100K", sub: "$100K Account", price: 549, compare: "$649", maxLoss: "6%*", dailyLoss: "3%* Editable", profitTarget: "8%*", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+      ],
+      defaultIndex: 2
+    },
+    "2step": {
+      sizes: [
+        { label: "$5K", sub: "$5K Account", price: 39, compare: "$59", maxLoss: "8%* Placeholder", dailyLoss: "5%* Editable", profitTarget: "8% / 5%", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$10K", sub: "$10K Account", price: 79, compare: "$99", maxLoss: "8%* Placeholder", dailyLoss: "5%* Editable", profitTarget: "8% / 5%", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$25K", sub: "$25K Account", price: 139, compare: "$179", maxLoss: "8%* Placeholder", dailyLoss: "4%* Editable", profitTarget: "8% / 5%", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$50K", sub: "$50K Account", price: 249, compare: "$299", maxLoss: "8%* Placeholder", dailyLoss: "4%* Editable", profitTarget: "8% / 5%", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+        { label: "$100K", sub: "$100K Account", price: 449, compare: "$549", maxLoss: "8%* Placeholder", dailyLoss: "4%* Editable", profitTarget: "8% / 5%", minDays: "3 Days*", consistency: "— Editable", split: "80%*", payout: "Bi-weekly*" },
+      ],
+      defaultIndex: 2
+    }
+  },
+  faq: [
+    {q:"What is ZeeFunded?", a:"ZeeFunded is a proprietary trading firm providing funded trading opportunities for traders who want flexibility, clear rules, and a chance to scale. You trade your strategy under transparent risk parameters and, when successful, access funded accounts and profit splits."},
+    {q:"What account types are available?", a:"Three programs: <b>Instant Funding</b> (no challenge, start immediately), <b>1-Step Challenge</b> (single evaluation phase), and <b>2-Step Challenge</b> (classic two-phase evaluation). Each is available in multiple account sizes — all prices and rules are centrally editable via ZEE_CONFIG."},
+    {q:"What is Instant Funding?", a:"Instant Funding gives immediate access to a funded account with no challenge phase. Rules per brief: 30% consistency rule, minimum 3 trading days, Maximum Loss Limit applies, No Daily Loss Limit, 80% profit split, and no trading restrictions."},
+    {q:"What is the difference between 1-Step and 2-Step?", a:"<b>1-Step</b> requires one profitable phase (e.g., 8% target — editable placeholder) before funding. <b>2-Step</b> requires two phases (e.g., 8% then 5% — placeholder) but typically offers lower entry pricing. Both have editable drawdown, consistency and payout rules."},
+    {q:"Is there a Daily Loss Limit?", a:"<b>Instant Funding: No</b> — there is no daily loss limit, only a maximum overall loss limit. 1-Step and 2-Step daily limits exist as editable placeholders (e.g., 3–5%) — configure to your intended policy."},
+    {q:"What is the Maximum Loss Limit?", a:"The maximum total loss permitted on the account. It applies across all programs. Instant Funding: applies (percentage editable in config). Challenge programs show placeholder percentages (e.g., 6–8%) — edit ZEE_CONFIG to set final values."},
+    {q:"What is the Consistency Rule?", a:"On Instant Funding, no single day may account for more than <b>30%</b> of total profits — encouraging steady performance over one-off spikes. For challenges this rule is an editable placeholder (currently “—”) and can be enabled/disabled."},
+    {q:"How many minimum trading days are required?", a:"Instant Funding requires <b>3 trading days</b> minimum. Challenges use the same 3-day minimum as an editable placeholder — adjust per phase if needed."},
+    {q:"What is the profit split?", a:"Instant Funding is fixed at <b>80%</b> to the trader. Challenge splits are editable placeholders currently set to 80%. Update ZEE_CONFIG.accounts[].split to publish final splits."},
+    {q:"How do payouts work?", a:"Successful traders can request payouts according to the applicable ZeeFunded account rules. Instant shows “On-demand*” and challenges “Bi-weekly*” as placeholders. No hard-coded cap, frequency or waiting period is published — all are editable via ZEE_CONFIG.payout."},
+    {q:"What trading strategies are allowed?", a:"Per ZeeFunded’s intended rules: <b>No trading restrictions.</b> You may trade your strategy freely within standard risk and compliance guardrails. If you need to prohibit specific practices (e.g., latency arbitrage), add them to ZEE_CONFIG and the Trading Rules section."},
+  ]
+};
+
+// render size selectors and handle updates
+function initAccounts(){
+  Object.keys(ZEE_CONFIG.accounts).forEach(key=>{
+    const cfg = ZEE_CONFIG.accounts[key];
+    const wrap = document.querySelector(`[data-size-wrap="${key}"]`);
+    if(!wrap) return;
+    wrap.innerHTML = cfg.sizes.map((s,i)=>`
+      <button data-key="${key}" data-index="${i}" class="size-btn px-3 py-1.5 rounded-full text-xs font-bold border transition ${i===cfg.defaultIndex?'bg-white text-[#0a0d2a] border-white shadow':'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white'}">${s.label}</button>
+    `).join('');
+    // set default
+    updateCard(key, cfg.defaultIndex);
+    wrap.querySelectorAll('.size-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        wrap.querySelectorAll('.size-btn').forEach(b=>{b.className='size-btn px-3 py-1.5 rounded-full text-xs font-bold border transition bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white'});
+        btn.className='size-btn px-3 py-1.5 rounded-full text-xs font-bold border transition bg-white text-[#0a0d2a] border-white shadow';
+        updateCard(key, parseInt(btn.dataset.index));
+      });
+    });
+  });
+}
+function updateCard(key, idx){
+  const cfg = ZEE_CONFIG.accounts[key];
+  const s = cfg.sizes[idx];
+  const card = document.querySelector(`[data-card="${key}"]`);
+  if(!card||!s) return;
+  card.querySelector('[data-price]').textContent = s.price;
+  if(card.querySelector('[data-compare]')) card.querySelector('[data-compare]').textContent = s.compare;
+  card.querySelector('[data-size-label]').textContent = s.sub;
+  const fields = {maxLoss:s.maxLoss, dailyLoss:s.dailyLoss, profitTarget:s.profitTarget, minDays:s.minDays, consistency:s.consistency, split:s.split, payout:s.payout};
+  Object.entries(fields).forEach(([k,v])=>{
+    const el = card.querySelector(`[data-field="${k}"]`);
+    if(el) el.innerHTML = v;
+  });
+}
+
+function handleStart(name, key){
+  const cfg = ZEE_CONFIG.accounts[key];
+  const wrap = document.querySelector(`[data-size-wrap="${key}"]`);
+  const active = wrap.querySelector('.bg-white.text-\\[\\#0a0d2a\\]');
+  let label = cfg.sizes[cfg.defaultIndex].label;
+  if(active) label = active.textContent;
+  showToast(`Starting ${name} • ${label} — redirecting to secure checkout`);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.remove('opacity-0','translate-y-4','pointer-events-none');
+  t.classList.add('opacity-100','translate-y-0');
+  clearTimeout(window._toastTimer);
+  window._toastTimer=setTimeout(()=>{
+    t.classList.add('opacity-0','translate-y-4','pointer-events-none');
+    t.classList.remove('opacity-100','translate-y-0');
+  },3200);
+}
+
+// FAQ render
+function initFAQ(){
+  const list=document.getElementById('faqList');
+  list.innerHTML = ZEE_CONFIG.faq.map((f,i)=>`
+    <div class="rounded-2xl border border-white/10 bg-[#0f1230] overflow-hidden">
+      <button class="faq-btn w-full flex items-center justify-between gap-4 p-5 text-left" data-i="${i}">
+        <span class="font-semibold text-[15px] leading-tight">${f.q}</span>
+        <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 transition"><i class="ri-add-line text-white/70"></i></span>
+      </button>
+      <div class="faq-panel hidden px-5 pb-5 text-sm leading-relaxed text-white/60 border-t border-white/5 pt-4 mx-5">${f.a}</div>
+    </div>
+  `).join('');
+  list.querySelectorAll('.faq-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const panel = btn.nextElementSibling;
+      const icon = btn.querySelector('i');
+      const isHidden = panel.classList.contains('hidden');
+      // close all
+      list.querySelectorAll('.faq-panel').forEach(p=>p.classList.add('hidden'));
+      list.querySelectorAll('.faq-btn i').forEach(ic=>{ic.className='ri-add-line text-white/70'});
+      list.querySelectorAll('.faq-btn span:last-child').forEach(s=>s.classList.remove('bg-white','text-[#0a0d2a]'));
+      if(isHidden){
+        panel.classList.remove('hidden');
+        icon.className='ri-subtract-line';
+        btn.querySelector('span:last-child').classList.add('bg-white');
+        btn.querySelector('span:last-child').classList.remove('bg-white/5');
+        icon.classList.add('text-[#0a0d2a]');
+      }
+    });
+  });
+}
+
+// rules tabs
+document.querySelectorAll('.rule-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.rule-tab').forEach(t=>{t.className='rule-tab px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-semibold text-sm hover:bg-white/10'});
+    tab.className='rule-tab active px-4 py-2.5 rounded-full bg-white text-[#0a0d2a] font-bold text-sm';
+    document.querySelectorAll('.rule-panel').forEach(p=>p.classList.add('hidden'));
+    document.getElementById('rule-'+tab.dataset.tab).classList.remove('hidden');
+  });
+});
+// program filter
+document.querySelectorAll('.prog-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.prog-tab').forEach(b=>{b.className='prog-tab px-5 py-2.5 rounded-full text-white/60 font-semibold text-sm hover:text-white transition'});
+    btn.className='prog-tab active px-5 py-2.5 rounded-full bg-white text-[#0a0d2a] font-bold text-sm shadow';
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.account-card').forEach(c=>{
+      if(f==='all') c.classList.remove('hidden');
+      else c.classList.toggle('hidden', c.dataset.card!==f);
+    });
+    if(f!=='all') showToast(`Showing ${f} program • All values editable in config`);
+  });
+});
+
+// mobile menu
+document.getElementById('mobileBtn').addEventListener('click',()=>{
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+// navbar scroll
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  if(window.scrollY>10) nav.classList.add('shadow-[0_10px_40px_rgba(0,0,0,0.4)]','bg-[#04061a]/90');
+  else nav.classList.remove('shadow-[0_10px_40px_rgba(0,0,0,0.4)]','bg-[#04061a]/90');
+});
+// smooth active nav
+const sections=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-120) cur=s.id; });
+  document.querySelectorAll('.nav-link').forEach(a=>{
+    a.classList.remove('text-white');
+    a.classList.add('text-white/70');
+    if(a.getAttribute('href')==='#'+cur){a.classList.add('text-white');a.classList.remove('text-white/70');}
+  });
+});
+
+initAccounts();
+initFAQ();
+</script>
+</body>
+</html>
